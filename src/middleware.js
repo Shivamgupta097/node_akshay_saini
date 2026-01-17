@@ -27,6 +27,11 @@ app.get('/admin/getAllData' , (req,res) => {
     res.send("GET All data successfully");
 })
 
+app.get('/user' , (req,res) => {
+    console.log("Hello testing user")
+    res.send("GET All user successfully");
+})
+
 app.get('/admin/deleteUser' , (req,res) => {
     res.send("Deleted successfully")
 })
