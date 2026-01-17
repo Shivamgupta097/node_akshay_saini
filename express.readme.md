@@ -13,5 +13,38 @@
 - .gitignore
 - Create a remote repo on github
 - Push all code to remote origin
+- Play with routes and route extesnions ex. hello, /, hello/2,/xyz
+- Order of the routes matter a lot
+- Install Postman app and make a worspace/collection > test api call
+
+----------------------------------------------------------------
+- Explore Routing and use of ?, +, (), * in the routes
+- Use of regex /a/ , /.*fly$/
+- Reading the query params in the routes
+- Reading the dynamic routes //:userId
+- app.get , app.post , app.patch, are the different requests
+- app.use we can use any routes
+- res.send("--") if we are not handeling it than the request will be loop in loading state  
+
+--------------------------------------------------------------
+- Handle multiple routes
+- next fuction along with route handler
+- Make sure if route and api methds are same then we need to use next to call the next api handler.
+- It will through error if res.send will not be come in path
+
+--------------------------------------------------------------
+- app.use act as middleware including function
+- first middleware is called call
+- app.use("/", () =>{
+    //get , post,patch with matching routes
+    next will called up
+
+    response handler are the function which send the report
+
+ }) //middleware
+
+
+- Main Job of serve to send the response
+
 
 
