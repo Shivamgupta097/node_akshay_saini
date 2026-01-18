@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const { adminAuth } = require('./middlewares/auth');
 const app = express();
 const port = 3000;
 
@@ -12,16 +13,7 @@ const port = 3000;
 // app.get("/client", (req,res,next) =>{
 //     res.send("<i><b>Hello i am here </b></i>")
 // })
-app.use("/admin" , (req,res, next)=>{
-    console.log("Admin auth is getting checked")
-    let token = 'xyz';
-    let isAutherized = token !== "xyz"
-    if(isAutherized){
-     next()
-    }else{
-       res.status(401).json({message :"Unautherized"})
-    }
-})
+app.use("/admin" , adminAuth)
 app.get('/admin/getAllData' , (req,res) => {
     console.log("Hello testing")
     res.send("GET All data successfully");

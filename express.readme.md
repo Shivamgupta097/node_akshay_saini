@@ -44,7 +44,15 @@
  }) //middleware
 
 
-- Main Job of serve to send the response
+- Main Job of server to send the response
+- Middleware route handler - play with the code
+- next()
+- next function and error along with the res.send()
+- app.use("/route", rh1, rhe2)
+- What is middleware
+- How express js basically handles request behind the scenes
+- differernce between app.use and app.all
+
 
 
 
