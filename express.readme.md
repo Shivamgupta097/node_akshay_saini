@@ -78,6 +78,15 @@ Mongoose schema
 - Connect your application to the database "Connection-url/devTinder"
 - Call the connectDB function and connect to the database before selecting on application 7777
 
+- Create a user schema
+   const User =  mongooser.model('User', userSchema);
+
+----------------------------------------------------------
+
+- Create /signup API to add data to database
+- Push some dcument using API calls from postman
+- Error Handeling using try, catch
+
 
 
 
