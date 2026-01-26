@@ -52,6 +52,24 @@
 - What is middleware
 - How express js basically handles request behind the scenes
 - differernce between app.use and app.all
+- error handelng using app.use
+
+
+----------------------------------------------------------
+Creating a database and mongodb
+- Go to mongo website
+- Create a free mb cluster
+- Create a user
+- Get the connection string
+- Install MongoDB compass
+
+----------------------------------------------------------
+- Connect through code
+- Document CRUD // CREATE , READ, UPDATE, DELETE
+- new MongoClient
+- client.connect()
+- db = client.db(dbName);
+- db.collection('User)
 
 
 
