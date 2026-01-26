@@ -71,6 +71,14 @@ Creating a database and mongodb
 - db = client.db(dbName);
 - db.collection('User)
 
+----------------------------------------------------
+Mongoose schema
+- Create a cluster free in mongo website (Atlas)
+- Install Mongoose
+- Connect your application to the database "Connection-url/devTinder"
+- Call the connectDB function and connect to the database before selecting on application 7777
+
+
 
 
 

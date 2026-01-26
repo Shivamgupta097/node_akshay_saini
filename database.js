@@ -1,6 +1,6 @@
 const {MongoClient} = require('mongodb')
 
-const URI = "mongodb+srv://sg491919_db_user:bjFvoW7INyf7S6gJ@cluster0.j9w2izz.mongodb.net/?appName=Cluster0"
+const URI = "mongodb+srv://sg491919_db_user:bjFvoW7INyf7S6gJ@cluster0.j9w2izz.mongodb.net/?appName=Cluster0/devTinder"
 const client = new MongoClient(URI);
 
 
