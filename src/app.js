@@ -6,31 +6,27 @@ const port = 3000;
 require("./config/database")
 
 
-app.post("/sign-up", async(req,res) =>{
-    const user = new User({
-        firstName:'Shivam',
-        lastName: 'Gupta',
-        age:"15",
-        gender:"Male",
-        email:"shivam@gmail.com",
-        password:"Pasword@123"
-    })
+app.use(express.json())
+app.post("/sign-up", async (req, res) => {
 
     try {
+        const user = new User(req.body)
+
+        console.log("req", req.body)
         await user.save();
         res.send("User added successfully")
     } catch (error) {
-        res.status(400).send("Error saving the user:",err.message)
+        res.status(400).send("Error saving the user:", err.message)
     }
 })
 
-connectDB().then(() =>{
+connectDB().then(() => {
     console.log("Database connection established");
-    app.listen(port , () =>{
-    console.log("Listening on port", port)
-})
-}).catch(error =>{
-    console.error("Connection did not established" , error)
+    app.listen(port, () => {
+        console.log("Listening on port", port)
+    })
+}).catch(error => {
+    console.error("Connection did not established", error)
 })
 
 

@@ -86,6 +86,10 @@ Mongoose schema
 - Create /signup API to add data to database
 - Push some dcument using API calls from postman
 - Error Handeling using try, catch
+----------------------------------------------------------
+JSON vs JS object
+- Add the express.josn middleware in your app
+- Make your sign up API dynamic to recieve data from the  end user
 
 
 
