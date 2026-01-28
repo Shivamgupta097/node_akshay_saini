@@ -89,7 +89,7 @@ Mongoose schema
 ----------------------------------------------------------
 JSON vs JS object
 - Add the express.josn middleware in your app
-- Make your sign up API dynamic to recieve data from the  end user
+- Make your sign up API dynamic to recieve data from the  end userUser.findOne() with duplicate emalIds , which object returned.
 
 
 
