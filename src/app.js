@@ -28,30 +28,65 @@ app.use(express.json())
 
 // })
 
-app.get('/user', async(req, res) =>{
-    const emailId = req.body.emailId
-    try {
-        const user = await User.findOne({emailId:emailId});
+app.delete('/user', async (req, res) => {
+    const userId = req.body.userId
 
-        if(user){
-            res.status(200).json(user)
-        }else{
-            res.status(400).json({message:"User not found"})
+    try {
+        const deletedUser = await User.findByIdAndDelete(userId)
+
+        if (deletedUser) {
+            res.send("User deleted Successfully")
+        } else {
+            res.send("Something went wrong in first")
         }
-        
+
     } catch (error) {
-        res.status(400).json({message:"Something went wrong"})
+        console.error(error, "error")
+        res.status(400).json({ message: "Something went wrong" })
     }
 })
-app.get('/feed', async(req,res) =>{
-    try{
+
+app.get('/user', async (req, res) => {
+    const emailId = req.body.emailId
+    try {
+        const user = await User.findOne({ emailId: emailId });
+
+        if (user) {
+            res.status(200).json(user)
+        } else {
+            res.status(400).json({ message: "User not found" })
+        }
+
+    } catch (error) {
+        res.status(400).json({ message: "Something went wrong" })
+    }
+})
+// Find User and update
+app.patch("/user", async (req, res) => {
+    const userId = req.body._id;
+    try {
+        const user = await User.findByIdAndUpdate({ _id: userId }, req.body)
+        console.log("user", user)
+        if (!user) {
+            res.status(404).json({ message: "User not found" })
+        } else {
+            res.status(200).json({ data: { ...user, emailId: userId }, message: "User updated successfully" })
+        }
+
+    } catch (error) {
+        console.error("error", error)
+        res.status(400).json({ message: "Something went wrong" })
+    }
+})
+
+app.get('/feed', async (req, res) => {
+    try {
         const data = await User.find({});
         console.log(data)
         res.status(200).json(data)
-    }catch(error){
+    } catch (error) {
         res.status(400).send("Something went wrong")
     }
-
 })
 
 app.post("/sign-up", async (req, res) => {
@@ -73,9 +108,4 @@ connectDB().then(() => {
 }).catch(error => {
     console.error("Connection did not established", error)
 })
-
-
-
-
-
 
