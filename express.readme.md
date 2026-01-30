@@ -91,6 +91,25 @@ JSON vs JS object
 - Add the express.josn middleware in your app
 - Make your sign up API dynamic to recieve data from the  end userUser.findOne() with duplicate emalIds , which object returned.
 
+---------------------------------------------------------------------------
+- Add the express.json middleware to your app
+- Make your signup Api dynamic to recieve data from the end user
+- User.findOne with duplicate
+- Api - CRUD
+- Difference between PATCH and put
+- Explore the mongoose documentation for model method
+- What are option in a ModelfindOneAndUpdatemethod, expolre more about it.
+- API - Update the user with emailId
+
+---------------------------------------------------------------------
+
+- Explore schematype options from the documentation
+- add required, unique, lowercase, min, minLegth, trim 
+- Add default
+- Create a custom validation function for geneder
+- Improve the DB schema - Put all appropriate validations on each field in Schema
+- Add timestamp to userSchema
+Data Sanitizing - Add API validation for each field
 
 
 

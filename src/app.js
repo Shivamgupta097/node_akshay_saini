@@ -8,26 +8,6 @@ require("./config/database");
 
 app.use(express.json())
 
-// app.get('/user' , async(req, res) => {
-//     const userId = req.body.emailId
-
-//     try {
-//         const user = await User.findOne({emailId:userId})
-//             console.log("userId" , userId, user)
-
-//         if(user){
-//             console.log("userId" , userId, data)
-//             res.status(200).json(data)
-//         } else{
-//             res.send("User not found")
-//         }
-
-//     } catch (error) {
-//         res.status(400).send("Something went wrong")
-//     }
-
-// })
-
 app.delete('/user', async (req, res) => {
     const userId = req.body.userId
 

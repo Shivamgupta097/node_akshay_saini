@@ -20,6 +20,7 @@ app.use(express.json())
 
 /* TO sign up user */
 
+
 app.post("/sign-up", async (req, res) => {
     const userData = req.body;
 
@@ -34,7 +35,8 @@ app.post("/sign-up", async (req, res) => {
         }
 
     } catch (error) {
-        console.error("error", error)
+        console.error("error", error);
+        return res.status(400).json({ message: error })
     }
 })
 
@@ -54,18 +56,38 @@ app.get('/user', async(req,res) =>{
   }
 })
 
+    const allowedUpdates = ["userId" , "age", "about", "photoUrl" , "skills", "gender"]
+
 
 /** Update user data */
 app.patch("/user", async(req, res) =>{
     // const userId = req.body.userId;
     const {userId ,...rest} = req.body
 
+    // const isAllowedUpdates = Object.keys(req.body).every(cur => allowedUpdates.includes(cur));
+    let isAllowedUpdates = false
+    for(let elm in req.body){
+         allowedUpdates.forEach((cur) =>{
+            if(cur === elm){
+                // "userId" , "email" // it should not update 
+                isAllowedUpdates = true
+            }
+         })
+    }
+    console.log("hello" , isAllowedUpdates)
     try{
+        if(!isAllowedUpdates){
+            throw new Error("Your custom error message here");
+        }
+
+        if(data.skills.length > 10){
+            throw new Error("Skills can not be update more than 10 ")
+        }
         const userData = await User.findByIdAndUpdate(userId, rest)
         res.status(200).json({data :userData , message:"User updated successfully"})
     }catch(error){
         console.error("error" , error)
-        res.status(400).json({message:"something went wrong"})
+        res.status(400).json({message:error.message})
     }
 })
 
