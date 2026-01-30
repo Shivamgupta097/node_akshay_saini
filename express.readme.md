@@ -102,14 +102,14 @@ JSON vs JS object
 - API - Update the user with emailId
 
 ---------------------------------------------------------------------
-
+ 
 - Explore schematype options from the documentation
 - add required, unique, lowercase, min, minLegth, trim 
 - Add default
 - Create a custom validation function for geneder
 - Improve the DB schema - Put all appropriate validations on each field in Schema
 - Add timestamp to userSchema
-Data Sanitizing - Add API validation for each field
+- Data Sanitizing - Add API validation for each field
 
 
 
