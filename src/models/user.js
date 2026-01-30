@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require('validator')
 
 const userSchema = new mongoose.Schema({
     firstName:{
@@ -15,7 +16,12 @@ const userSchema = new mongoose.Schema({
         required:true,
         unique:true,
         lowercase:true,
-        trim:true
+        trim:true,
+        validate:function(value){
+            if(!validator.isEmail(value)){
+                throw new Error("Email is not valid")
+            }
+        }
     },
     age:{
         type:Number,
@@ -27,7 +33,12 @@ const userSchema = new mongoose.Schema({
     },
     photoUrl:{
         type:String,
-        default:"https://img.freepik.com/premium-vector/user-profile-icon-circle_1256048-12499.jpg?semt=ais_hybrid&w=740&q=80"
+        default:"https://img.freepik.com/premium-vector/user-profile-icon-circle_1256048-12499.jpg?semt=ais_hybrid&w=740&q=80",
+        validate:function(value){
+            if(!validator.isURL(value)){
+                throw new Error('Photo url is not vailid')
+            }
+        }
     },
     skills:{
         type:[String],
@@ -38,7 +49,12 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type:String,
-        required:true
+        required:true,
+        validate: function(value){
+            if(!validator.isStrongPassword(value)){
+                throw new Error("Password must be strong")
+            }
+        }
     }
 }, {
     timestamps :true

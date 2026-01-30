@@ -111,6 +111,9 @@ JSON vs JS object
 - Add timestamp to userSchema
 - Data Sanitizing - Add API validation for each field
 
+---------------------------------------------------------------------------
+- explore validator library
+
 
 
 
