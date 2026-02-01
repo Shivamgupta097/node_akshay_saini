@@ -113,6 +113,29 @@ JSON vs JS object
 
 --------------------------------------------------------------------
 - explore validator library
+- validate through mongoose or api
+- Encrypting the password
+- Creating a new user in db
+
+--
+
+- Validate data in signup api
+- Install bcrypt package
+- Create passwordHash with password using bcrypt.hash and save the user with encrypted passowrd
+- Create Login api
+
+------------------------------------------------------
+
+- Install cookie parser
+- Just send a dummy cookie to user
+- Create GET/Profile api and check if you get the cookie back
+-In Login API, create a JWT token
+
+----------------------------------------------------------
+
+- useAuth Middleware
+-Add the userAuth as middlewarevin profile API and a new sendConnectionRequest API
+-Set the expiry ofJWT token and cookies to 7 days
 
 -----------------------------------------------------------------
 

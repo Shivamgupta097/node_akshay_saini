@@ -1,13 +1,18 @@
 const express = require('express');
-const connectDB = require('./config/database');
-const User = require("./models/user")
-const PORT = 7777;
 const bcrypt = require('bcrypt')
-const cookieParser = require("cookie-parser");
-const jwt = require('jsonwebtoken')
+const connectDB = require('./config/database');
+const User = require("./models/user");
+const { validateSignUpData } = require("./utils/validations")
+const PORT = 7777;
+var cookieParser = require('cookie-parser')
+const jwt = require("jsonwebtoken");
+const validator = require("validator")
+const auth = require("./middlewares/auth")
 
 const app = express();
 app.use(express.json())
+app.use(cookieParser())
+
 app.use(cookieParser())
 
 
@@ -26,66 +31,90 @@ app.use(cookieParser())
 /* TO sign up user */
 
 
-// app.post("/sign-up", async (req, res) => {
-//     const userData = req.body;
+app.post("/sign-up", async (req, res) => {
 
-//     try {
-//         if (userData) {
-//             const user = new User(userData);
-//             console.log("req", req.body)
-//             await user.save()
-//             res.status(200).json({ message: "User added successfuly", data: user });
-//         } else {
-//             return res.status(400).json({ message: "No data inserted" })
-//         }
+    /**
+     * 1. Validation of data
+     * 2. Encrypt of password
+     * 3. Create the instance of User model
+     */
 
-//     } catch (error) {
-//         console.error("error", error);
-//         return res.status(400).json({ message: error })
-//     }
-// })
+    try {
+        //validation of data
+        validateSignUpData(req);
 
-/***Login */
-// app.post('/login', async (req, res) => {
-//     const { email, password } = req.body;
-//     try {
+        const { password } = req.body;
+        const passwordHash = await bcrypt.hash(password, 10);
+        const userData = { ...req.body, password: passwordHash };
 
-//         if (!email && !password) {
-//             return res.status(400).json({ message: 'Email and password is required !' })
-//         }
+        //encrypt the password
+        if (userData) {
+            const user = new User(userData);
+            console.log("req", req.body)
+            await user.save()
+            res.status(200).json({ message: "User added successfuly", data: user });
+        } else {
+            res.status(400).json({ message: "No user found" })
+        }
+    } catch (error) {
+        res.status(400).json({ message: "Something went wrong" })
 
-//         const userObject = await User.findOne({ email: email })
+    }
+})
 
-//         if (!userObject) {
-//             throw new Error("User is not able to detect here")
-//         }
+app.get('/profile', auth.userAuth, async (req, res) => {
 
-//         console.log("user object", userObject)
+    try {
+        const userObj = req.userData;
+        res.send(userObj)
 
-//         const isPasswordValid = await bcrypt.compare(password, userObject.password);
-//         if (isPasswordValid) {
-//             const token = await jwt.sign({ email: email }, "DEV@1234", { expiresIn: "8h" });
-//             console.log("token", token)
-//             res.cookie("token", token, {
-//                 httpOnly: true,
-//                 maxAge: 8 * 60 * 60 * 1000
-//             });
-//             res.status(200).json({ message: "Login successful" });
+    } catch (error) {
+        console.error(error.message)
+        res.status(400).json({ message: error.message })
+    }
+
+})
 
 
-//         } else {
-//             return res.status(400).json({ message: 'Password is required !' })
-//         }
+app.post("/login", async (req, res) => {
+    const { email, password } = req.body
 
-//     } catch (error) {
-//         console.log(error.message)
-//     }
+    try {
+        const userDetails = await User.findOne({ email: email })
+        if (!userDetails) {
+            throw new Error("Invalid credential")
+        }
+        //const isPasswordValid = await bcrypt.compare(password, userDetails.password);
+        //  const isPasswordValid = await bcrypt.compare(password, userDetails.password);
+        const isPasswordValid = await userDetails.validatePassword(req.body)
 
+        if (!isPasswordValid) {
+            throw new Error("Please enter correct password")
+        } else {
 
-// })
+            /**
+             * Create the JWT token *
+             * 
+             * */
 
-app.get('/profile', userAuth , async(req,res) =>{
+            const token = await userDetails.getJWT()
+            // const token = await jwt.sign({ _id: userDetails._id }, "DevTinder$7999", {
+            //     expiresIn:"7d"
+            // })
 
+            // Add the token to cookie and send the response back to the user
+            res.cookie('token', token, {
+                expiresIn: new Date() + 8 * 3600000
+            })
+
+            console.log("login", token)
+            res.send("Login successfully")
+        }
+
+    } catch (error) {
+        console.error("error", error)
+        res.status(400).json("something went wrong", error.message)
+    }
 })
 
 /** TO get detail of single user */
@@ -122,7 +151,7 @@ app.patch("/user", async (req, res) => {
             }
         })
     }
-    console.log("hello", isAllowedUpdates)
+
     try {
         if (!isAllowedUpdates) {
             throw new Error("Your custom error message here");
@@ -133,6 +162,7 @@ app.patch("/user", async (req, res) => {
         }
         const userData = await User.findByIdAndUpdate(userId, rest)
         res.status(200).json({ data: userData, message: "User updated successfully" })
+
     } catch (error) {
         console.error("error", error)
         res.status(400).json({ message: error.message })
@@ -152,18 +182,17 @@ app.get('/feed', async (req, res) => {
 })
 
 /** To delete particular user */
-
 app.delete('/user', (req, res) => {
     const userId = req.body.userId;
-
     try {
         const userData = User.findByIdAndDelete(userId);
         res.status(400).json({ message: "User deleted successfully" })
     } catch (error) {
         console.error("error", error)
         res.status(400).json({ message: "something went wrong" })
-
+        res.status(400).json({ message: "User deleted successfully" })
     }
+
 })
 
 
