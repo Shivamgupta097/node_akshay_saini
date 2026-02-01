@@ -111,9 +111,19 @@ JSON vs JS object
 - Add timestamp to userSchema
 - Data Sanitizing - Add API validation for each field
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------
 - explore validator library
 
+-----------------------------------------------------------------
+
+- Explore tinder/api
+- Create alist of all api in tinder web app
+- Group multiple router
+
+----------------------------------------------------------------
+- Eplore tinder API
+- Creae a list of al apis
+- group miltipleas routes
 
 
 
