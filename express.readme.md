@@ -134,19 +134,16 @@ JSON vs JS object
 ----------------------------------------------------------
 
 - useAuth Middleware
--Add the userAuth as middlewarevin profile API and a new sendConnectionRequest API
+- Add the userAuth as middlewarevin profile API and a new sendConnectionRequest API
 -Set the expiry ofJWT token and cookies to 7 days
 
------------------------------------------------------------------
+----------------------------------------------------------
 
 - Explore tinder/api
-- Create alist of all api in tinder web app
-- Group multiple router
+- Create a list of all api in tinder web app
+- Group multiple router under respective router
 
-----------------------------------------------------------------
-- Eplore tinder API
-- Creae a list of al apis
-- group miltipleas routes
+----------------------------------------------------------
 
 
 

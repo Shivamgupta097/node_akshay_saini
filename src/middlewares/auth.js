@@ -9,7 +9,11 @@ const userAuth = async (req, res, next) => {
         if (!token) {
             return res.send("Invalid token")
         }
-        const decodeObj = await jwt.verify(token, "DevTinder$7999")
+        const decodeObj = await jwt.verify(token, "DevTinder$7999");
+        console.log(decodeObj , "hello")
+        if(!decodeObj){
+            throw new error("User not found")
+        }
         const userData = await User.findById(decodeObj?._id);
         if (!userData) {
             throw new Error("user did not founded")
@@ -18,7 +22,7 @@ const userAuth = async (req, res, next) => {
         req.userData = userData
         console.log("userData" , userData)
 
-        next()
+        next();
         //next is called to move the request handler to another api
 
     } catch (error) {
