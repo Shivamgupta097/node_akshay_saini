@@ -145,5 +145,13 @@ JSON vs JS object
 
 ----------------------------------------------------------
 
+- Explore tinder APIs
+- Create a list all API you can think of in DEV tinder
+- Group multiple routes under respective routers
+- Read documentation for express.Router
+- Create routes folder for managing auth, profile, request router
+- Create authRouter, profileRouter, requestRouter.
+- Import these routers in app.js
+
 
 
