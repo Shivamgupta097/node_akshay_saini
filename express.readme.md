@@ -151,7 +151,26 @@ JSON vs JS object
 - Read documentation for express.Router
 - Create routes folder for managing auth, profile, request router
 - Create authRouter, profileRouter, requestRouter.
-- Import these routers in app.js
+- Import these routers in app.js.
+
+--------------------------------------------------------
+- Create POST /logout API
+- Create PATCH /profile/edit
+- Create PATCH /profile.password API
+- Make you validate all data in every POST, PATCH
+
+---------------------------------------------------------
+
+- Create connection request schema
+- Send connection request api
+- Proper validation of Data
+- Think about all corner corner cases
+- $or query $and query in mongoose
+- schema.pre("save) 
+- Read more about indexes in MongoDB
+- Why do we need indexes in DB?
+- What is the advantages and disadvantage of creating?
+- Read the article of compound indexes
 
 
 
