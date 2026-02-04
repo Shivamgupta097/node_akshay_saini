@@ -39,9 +39,10 @@ requestRouter.post("/request/send/:status/:toUserId", auth.userAuth, async (req,
             $or: [
                 { fromUserId, toUserId },
                 { fromUserId: toUserId, toUserId: fromUserId }
-        ]});
+            ]
+        });
 
-        if(isConnectionsExist){
+        if (isConnectionsExist) {
             throw new Error("This connection request already exist")
         }
 
@@ -62,6 +63,59 @@ requestRouter.post("/request/send/:status/:toUserId", auth.userAuth, async (req,
     } catch (error) {
         res.status(400).json({ message: error.message })
         console.error("Error :", error)
+    }
+})
+
+
+
+requestRouter.post("/request/review/:status/:requestedId", auth.userAuth, async (req, res, next) => {
+
+    try {
+
+        const requestedId = req.params.requestedId
+        const status = req.params.status
+
+        const allowedStatus = ["accepted", "rejected"];
+        const isAllowedStatus = allowedStatus.includes(status);
+
+        if (!isAllowedStatus) {
+            throw new Error("Status " + status + " is not permitted")
+        }
+
+
+        /**
+         * userData
+         * 
+         * where status = Interested && _id === requestedObj.requestedId
+         */
+        // const requestedData = await ConnectionRequest.findOne({
+        //     $and: [
+        //         { _id: requestedId }, { status:"interested"}
+        //     ]
+        // });
+
+        const requestedData = await ConnectionRequest.findOne({
+            _id: requestedId,
+            status: "interested",
+            toUserId: req.userData._id
+        })
+
+
+        if (!requestedData) {
+            throw new Error("No connection  of interest were found to changed to accepted or reject ")
+        }
+
+        const connectionDataWithStatus = await ConnectionRequest.save()
+
+        res.status(200).json({
+            message: "connection " + status,
+            data: { ...connectionDataWithStatus }
+        })
+
+    } catch (error) {
+        console.error("error", error.message)
+        res.status(400).json({ message: error.message })
+
     }
 })
 

@@ -172,5 +172,9 @@ JSON vs JS object
 - What is the advantages and disadvantage of creating?
 - Read the article of compound indexes
 
+--------------------------------------------------------
 
-
+- Write code with proper validations for POST  /request/review/:status/:requestId
+-Thought process - POST vs GET
+- Read about ref and populate
+- Create GET /user/request/recieved with all the checks 
