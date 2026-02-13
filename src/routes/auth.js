@@ -52,7 +52,7 @@ authRouter.post('/login', async (req, res) => {
                 httpOnly: true,
                 maxAge: 8 * 60 * 60 * 1000
             });
-            res.status(200).json({ message: "Login successful" });
+            res.status(200).json({ message: "Login successful", data: userObject });
 
 
         } else {
@@ -60,7 +60,8 @@ authRouter.post('/login', async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message , "error")
+        
     }
 })
 

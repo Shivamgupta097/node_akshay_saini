@@ -10,7 +10,6 @@ const userAuth = async (req, res, next) => {
             return res.send("Invalid token")
         }
         const decodeObj = await jwt.verify(token, "DevTinder$7999");
-        console.log(decodeObj , "hello")
         if(!decodeObj){
             throw new error("User not found")
         }

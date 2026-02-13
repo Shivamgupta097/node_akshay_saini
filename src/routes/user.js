@@ -10,6 +10,8 @@ const ConnectionRequest = require("../models/connectionRequest");
 * 
 */
 
+const USER_DATA_NEED_TO_SHOW = ['firstName', 'lastName', 'photoUrl', 'age', 'gender', 'about', 'skills']
+
 userRouter.get("/user/connection", user.userAuth, async (req, res) => {
 
     try {
@@ -42,8 +44,8 @@ userRouter.get("/user/request/recieved", user.userAuth, async (req, res) => {
         const requestList = await ConnectionRequest.find({
             toUserId: userData?._id,
             status: "interested"
-        }).populate("fromUserId", ['firstName', 'lastName', 'photoUrl'])
-            .populate("toUserId", ['firstName', 'lastName', 'photoUrl'])
+        }).populate("fromUserId", USER_DATA_NEED_TO_SHOW)
+            .populate("toUserId", USER_DATA_NEED_TO_SHOW)
 
         if (!requestList.length) {
             throw new Error('No request found')
@@ -55,6 +57,39 @@ userRouter.get("/user/request/recieved", user.userAuth, async (req, res) => {
         res.status(400).json({ message: error.message })
     }
 
+})
+
+userRouter.get("/user/feed", user.userAuth, async(req, res) =>{
+    try{
+        const loggedInUser = req.userData;
+        const connectionRequests = await ConnectionRequest.find({
+            $or: [
+                {fromUserId : loggedInUser._id},
+                {toUserId:loggedInUser._id}
+            ]
+        }).select(["fromUserId" , "toUserId"])
+        // .populate("fromUserId","firstName")
+        // .populate("toUserId","firstName")
+
+        // console.log("connectionRequest", connectionRequests)
+
+        const hideUsersFromFeed =  new Set();
+        connectionRequests.forEach(req => {
+            hideUsersFromFeed.add(req.fromUserId.toString());
+            hideUsersFromFeed.add(req.toUserId.toString())
+        })
+
+        const users = await User.find({
+           $and: [
+            {_id :{$nin: Array.from(hideUsersFromFeed)},},
+            {_id:{$ne: loggedInUser._id}},
+        ],
+        }).select(USER_DATA_NEED_TO_SHOW)
+
+        res.send(users);
+    }catch(error){
+        console.error("error" ,error)
+    }
 })
 
 module.exports = userRouter;
