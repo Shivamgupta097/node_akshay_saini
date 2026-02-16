@@ -28,10 +28,10 @@ profileRouter.patch("/profile/edit", auth.userAuth, async(req,res) => {
             if(!user){
                 throw new Error('User does not found')
             }
-            res.status(200).json({message:"User updated successfully"})
+            res.status(200).json({data:req.userData, message:"User updated successfully"})
 
         }else{
-            res.status(400).json({message:"token is not valid"})
+            res.status(400).json({message:"token is not valid", data:req.user})
         }
     }catch(error){
         res.status(400).json("Error :", error.message)
