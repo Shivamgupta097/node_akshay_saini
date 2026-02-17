@@ -103,7 +103,7 @@ requestRouter.post("/request/review/:status/:requestedId", auth.userAuth, async 
             throw new Error("No connection  of interest were found to changed to accepted or reject ")
         }
 
-        const connectionDataWithStatus = await ConnectionRequest.save()
+        const connectionDataWithStatus = await requestedData.save()
 
         res.status(200).json({
             message: "connection " + status,

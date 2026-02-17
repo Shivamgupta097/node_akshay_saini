@@ -34,15 +34,16 @@ userRouter.get("/user/connection", user.userAuth, async (req, res) => {
         { toUserId: userData?._id, status: "accepted" },
         { fromUserId: userData?._id, status: "accepted" },
       ],
-    });
+    }).populate("fromUserId", ["photoUrl", "firstName" , "lastName","gender", "age", "about"])
+    .populate('toUserId' , ["photoUrl", "firstName" , "lastName", "gender", "age", "about"])
     if (!connectionList.length) {
-      throw new Error("No request found");
+      throw new Error("No connection found");
     }
     res
       .status(200)
       .json({ message: "connection list found", data: connectionList });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: error.message ,data:[]});
   }
 });
 
