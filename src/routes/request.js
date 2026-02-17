@@ -66,8 +66,6 @@ requestRouter.post("/request/send/:status/:toUserId", auth.userAuth, async (req,
     }
 })
 
-
-
 requestRouter.post("/request/review/:status/:requestedId", auth.userAuth, async (req, res, next) => {
 
     try {
@@ -118,5 +116,6 @@ requestRouter.post("/request/review/:status/:requestedId", auth.userAuth, async 
 
     }
 })
+
 
 module.exports = requestRouter
