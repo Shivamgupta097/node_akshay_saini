@@ -1,26 +1,91 @@
 const express = require('express')
+const connectDB = require("./config/database");
+const User = require('./models/user');
 const app = express();
 const port = 3000;
+require("./config/database");
 
 
-app.use("/" , (req, res, next) =>{
-    res.send("1 send Hello from the server middleware");
-    next();
-});
+app.use(express.json())
 
-app.use("/test" , (req, res,next) =>{
-    res.send("2 send Hello from the server middleware");
-    // next();
+app.delete('/user', async (req, res) => {
+    const userId = req.body.userId
+
+    try {
+        const deletedUser = await User.findByIdAndDelete(userId)
+
+        if (deletedUser) {
+            res.send("User deleted Successfully")
+        } else {
+            res.send("Something went wrong in first")
+        }
+
+    } catch (error) {
+        console.error(error, "error")
+        res.status(400).json({ message: "Something went wrong" })
+    }
 })
 
-app.use("post" , (req, res, next) =>{
-    res.send("3 send Hello from the server middleware");
-    // next();
+app.get('/user', async (req, res) => {
+    const emailId = req.body.emailId
+    try {
+        const user = await User.findOne({ emailId: emailId });
+
+        if (user) {
+            res.status(200).json(user)
+        } else {
+            res.status(400).json({ message: "User not found" })
+        }
+
+    } catch (error) {
+        res.status(400).json({ message: "Something went wrong" })
+    }
+})
+// Find User and update
+app.patch("/user", async (req, res) => {
+    const userId = req.body._id;
+    try {
+        const user = await User.findByIdAndUpdate({ _id: userId }, req.body)
+        console.log("user", user)
+        if (!user) {
+            res.status(404).json({ message: "User not found" })
+        } else {
+            res.status(200).json({ data: { ...user, emailId: userId }, message: "User updated successfully" })
+        }
+
+    } catch (error) {
+        console.error("error", error)
+        res.status(400).json({ message: "Something went wrong" })
+    }
 })
 
-app.listen(port, () =>{
-    console.log("Listening o port ", port)
-});
+app.get('/feed', async (req, res) => {
+    try {
+        const data = await User.find({});
+        console.log(data)
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(400).send("Something went wrong")
+    }
+})
 
+app.post("/sign-up", async (req, res) => {
+    try {
+        const user = new User(req.body)
+        console.log("req", req.body)
+        await user.save();
+        res.send("User added successfully")
+    } catch (error) {
+        res.status(400).send("Error saving the user:", err.message)
+    }
+})
 
+connectDB().then(() => {
+    console.log("Database connection established");
+    app.listen(port, () => {
+        console.log("Listening on port", port)
+    })
+}).catch(error => {
+    console.error("Connection did not established", error)
+})
 

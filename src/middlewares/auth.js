@@ -1,0 +1,33 @@
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+
+const userAuth = async (req, res, next) => {
+  try {
+    const { token } = req.cookies;
+
+    console.log("token" , token)
+
+    if (!token) {
+      return res.status(401).send("please login");
+    }
+    const decodeObj = await jwt.verify(token, "DevTinder$7999");
+    if (!decodeObj) {
+      throw new error("Invalid Token");
+    }
+    const userData = await User.findById(decodeObj?._id);
+    if (!userData) {
+      throw new Error("user did not founded");
+    }
+
+    req.userData = userData;
+    console.log("userData", userData);
+
+    next();
+    //next is called to move the request handler to another api
+  } catch (error) {
+    console.error("error", error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+module.exports = { userAuth };

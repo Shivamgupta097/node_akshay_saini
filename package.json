@@ -2,13 +2,23 @@
   "name": "dev-tinder",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
+    "dev": "nodemon src/crud",
+    "start" :"node src/crud",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^5.2.1"
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.1.5",
+    "validator": "^13.15.26"
   }
 }
