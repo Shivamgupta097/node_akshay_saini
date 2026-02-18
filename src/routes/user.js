@@ -36,7 +36,7 @@ userRouter.get("/user/connection", user.userAuth, async (req, res) => {
       ],
     }).populate("fromUserId", ["photoUrl", "firstName" , "lastName","gender", "age", "about"])
     .populate('toUserId' , ["photoUrl", "firstName" , "lastName", "gender", "age", "about"])
-    if (!connectionList.length) {
+    if (!connectionList) {
       throw new Error("No connection found");
     }
     res
@@ -85,7 +85,7 @@ userRouter.get("/user/request/recieved", user.userAuth, async (req, res) => {
       .populate("toUserId", USER_DATA_NEED_TO_SHOW)
 
 
-    if (!requestList.length) {
+    if (!requestList) {
       throw new Error("No request found");
     }
 

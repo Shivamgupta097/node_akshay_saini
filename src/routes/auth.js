@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 
 authRouter.post("/sign-up", async (req, res) => {
   try {
+    console.log("req hello" , req.body)
     const userData = req.body;
     validateSignUpData(req);
 
@@ -14,8 +15,29 @@ authRouter.post("/sign-up", async (req, res) => {
 
     if (userData) {
       const user = new User({ ...userData, password: hashedPassword });
-      console.log("req", req.body);
-      await user.save();
+      // console.log("req", req.body);
+
+      // if(!token){
+      //   res.send("Token not generated")
+      // }
+      // req.cookiess({
+
+      // })
+      const newUser = await user.save();
+      // console.log("new User" , newUser)
+      const token = await jwt.sign({_id: newUser?._id}, "DevTinder$7999", {
+        expiresIn: "8h",
+      });
+
+      if (!token) {
+        res.status(400).json({ message: "invalid token" });
+      }
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 8 * 60 * 60 * 1000,
+      });
+
       res
         .status(201)
         .json({ message: "User Regstered successfuly", data: user });
